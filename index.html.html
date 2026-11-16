@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d2b">
+<title>SPACE MISSION – PETUALANGAN LUAR ANGKASA</title>
+<style>
+:root{--navy:#080d2b;--panel:#111a45;--cyan:#62e7ff;--gold:#ffd76a;--pink:#ff79c6;--white:#f6f8ff;--muted:#b8c4ed}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--white);font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:radial-gradient(ellipse at 50% 0%,#263b82 0,#11183f 38%,#070b22 78%);overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.55;background-image:radial-gradient(2px 2px at 20px 30px,#fff 99%,transparent),radial-gradient(1px 1px at 80px 110px,#9cecff 99%,transparent),radial-gradient(2px 2px at 160px 70px,#fff 99%,transparent),radial-gradient(1px 1px at 230px 160px,#fff 99%,transparent);background-size:280px 220px}
+button{font:inherit;cursor:pointer;border:0}.wrap{width:min(1050px,94vw);margin:auto;padding:22px 0 36px;position:relative}
+header{text-align:center;margin:4px 0 18px}.eyebrow{letter-spacing:4px;color:var(--cyan);font-size:.75rem;font-weight:800}.logo{font-size:clamp(1.8rem,5vw,3.4rem);line-height:1.08;font-weight:1000;text-shadow:0 4px 0 #27316c,0 0 25px #5eeaff66;margin:8px 0}.subtitle{color:var(--muted);margin:8px 0}
+.hud{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:18px 0}.chip{background:#101a48dd;border:1px solid #6575c966;border-radius:999px;padding:9px 16px;font-weight:800;box-shadow:0 5px 18px #0003}.chip span{color:var(--gold)}
+main{background:linear-gradient(145deg,#172354ee,#0d1538f2);border:1px solid #7185dc66;border-radius:26px;padding:clamp(16px,3vw,30px);box-shadow:0 18px 55px #0006;min-height:430px}
+.screen{display:none}.screen.active{display:block}.hero{text-align:center;padding:18px 8px}.astronaut{font-size:clamp(5rem,15vw,8rem);filter:drop-shadow(0 10px 18px #5deaff55);animation:float 3s ease-in-out infinite}@keyframes float{50%{transform:translateY(-12px) rotate(3deg)}}
+h2{font-size:clamp(1.4rem,4vw,2.1rem);margin:8px 0 12px}.lead{max-width:650px;margin:0 auto 22px;color:var(--muted);line-height:1.65}
+.primary,.secondary{border-radius:15px;padding:13px 22px;font-weight:900;transition:.18s}.primary{background:linear-gradient(135deg,#ffe17c,#ffb64f);color:#34204b;box-shadow:0 6px 0 #a65c35,0 10px 25px #ffbd5a33}.primary:hover{transform:translateY(-2px)}.secondary{background:#26366e;color:white;border:1px solid #7589db}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:22px 0}.planet{background:#0c1438;border:1px solid #5267b8;border-radius:18px;padding:17px;text-align:center;cursor:pointer;transition:.2s}.planet:hover{transform:translateY(-4px);border-color:var(--cyan)}.planet .emoji{font-size:3rem}.planet h3{margin:7px 0 3px}.planet p{margin:0;color:var(--muted);font-size:.88rem}.planet.locked{opacity:.48;cursor:not-allowed}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:18px}.progress{height:10px;background:#080e2d;border-radius:20px;overflow:hidden;flex:1;min-width:130px}.bar{height:100%;width:0;background:linear-gradient(90deg,#62e7ff,#8cffc1);transition:width .3s}
+.question-card{background:#0a1234;border:1px solid #5267b8;border-radius:20px;padding:clamp(18px,4vw,28px);text-align:center}.qmeta{color:var(--cyan);font-weight:800;font-size:.85rem;letter-spacing:1px}.question{font-size:clamp(1.2rem,3vw,1.7rem);font-weight:850;line-height:1.4;margin:14px auto 22px;max-width:700px}.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:700px;margin:auto}.answer{background:#1b2b62;color:white;border:2px solid #435ba7;border-radius:15px;padding:14px 12px;font-weight:800;min-height:62px}.answer:hover:not(:disabled){border-color:var(--cyan);background:#263c7c}.answer.correct{background:#145b50;border-color:#6cf5bd}.answer.wrong{background:#64294d;border-color:#ff8dc4}.feedback{min-height:35px;margin:17px 0 0;font-weight:800}.feedback.good{color:#83ffd0}.feedback.bad{color:#ff9ccf}.question-actions{margin-top:14px}
+.result{text-align:center;padding:22px 8px}.bigscore{font-size:clamp(3rem,10vw,5rem);font-weight:1000;color:var(--gold);text-shadow:0 0 25px #ffd76a55}.stars{font-size:2.5rem;letter-spacing:6px;margin:6px}.small{color:var(--muted);line-height:1.6}.footer{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:17px;color:#9eaddd;font-size:.8rem}.sound{background:transparent;color:var(--muted);border:1px solid #5267b8;border-radius:12px;padding:8px 12px}
+@media(max-width:560px){.answers{grid-template-columns:1fr}.chip{font-size:.85rem;padding:8px 12px}main{border-radius:20px}.wrap{width:94vw}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">🚀 MISI BELAJAR DIMULAI!</div>
+  <div class="logo">SPACE MISSION</div>
+  <div class="subtitle">PETUALANGAN LUAR ANGKASA</div>
+</header>
+<div class="hud">
+  <div class="chip">⭐ Skor: <span id="score">0</span></div>
+  <div class="chip">🏅 Bintang: <span id="stars">0</span></div>
+  <div class="chip">🪐 Planet: <span id="planetHud">Belum dipilih</span></div>
+  <button class="sound" id="soundBtn" aria-label="Aktifkan atau matikan suara">🔊 Suara: ON</button>
+</div>
+<main>
+<section class="screen active" id="home">
+ <div class="hero">
+  <div class="astronaut">👩‍🚀</div>
+  <h2>Halo, Penjelajah Cilik!</h2>
+  <p class="lead">Siapkan roketmu! Jelajahi planet-planet, jawab pertanyaan seru, kumpulkan bintang, dan jadilah Penjelajah Luar Angkasa Hebat.</p>
+  <button class="primary" id="startBtn">MULAI MISI 🚀</button>
+ </div>
+</section>
+<section class="screen" id="map">
+ <h2>🪐 Pilih Tujuan Misi</h2>
+ <p class="small">Selesaikan tantangan di setiap planet untuk membuka perjalanan berikutnya.</p>
+ <div class="grid" id="planetGrid"></div>
+ <div style="text-align:center"><button class="secondary" id="homeBtn">← Kembali</button></div>
+</section>
+<section class="screen" id="game">
+ <div class="topline">
+  <button class="secondary" id="mapBtn">← Peta</button>
+  <div class="progress"><div class="bar" id="progressBar"></div></div>
+  <strong id="qCount">1 / 5</strong>
+ </div>
+ <div class="question-card">
+  <div class="qmeta" id="qPlanet">MISI PLANET</div>
+  <div class="question" id="question">Pertanyaan akan muncul di sini.</div>
+  <div class="answers" id="answers"></div>
+  <div class="feedback" id="feedback" aria-live="polite"></div>
+  <div class="question-actions"><button class="primary" id="nextBtn" disabled>LANJUTKAN →</button></div>
+ </div>
+</section>
+<section class="screen" id="result">
+ <div class="result">
+  <div class="astronaut">🏆</div>
+  <h2 id="resultTitle">Misi Berhasil!</h2>
+  <div class="bigscore" id="finalScore">0</div>
+  <div class="stars" id="earnedStars">☆☆☆</div>
+  <p class="small" id="resultText"></p>
+  <button class="primary" id="continueBtn">LANJUT JELAJAHI 🚀</button>
+ </div>
+</section>
+</main>
+<div class="footer"><span>🌟 Belajar sambil bermain • Space Mission</span><span>Dirancang untuk penjelajah cilik</span></div>
+</div>
+<script>
+const missions=[
+ {name:"Bumi",emoji:"🌍",desc:"Rumah kita yang istimewa",color:"#5dd7ff",questions:[
+  ["Planet tempat kita tinggal adalah …",["Mars","Bumi","Venus","Jupiter"],1,"Benar! Bumi adalah rumah bagi kita."],
+  ["Bentuk Bumi paling tepat adalah …",["Datar","Kubus","Hampir bulat","Segitiga"],2,"Hebat! Bumi berbentuk hampir bulat."],
+  ["Satelit alami Bumi adalah …",["Matahari","Bulan","Mars","Bintang"],1,"Tepat! Bulan mengelilingi Bumi."],
+  ["Sebagian besar permukaan Bumi tertutup oleh …",["Pasir","Hutan","Air","Salju"],2,"Benar! Sebagian besar permukaan Bumi adalah air."],
+  ["Agar Bumi tetap bersih, kita harus …",["Membuang sampah sembarangan","Menebang pohon","Menjaga lingkungan","Mencemari sungai"],2,"Keren! Kita harus menjaga lingkungan."]
+ ]},
+ {name:"Mars",emoji:"🔴",desc:"Planet Merah",color:"#ff8b69",questions:[
+  ["Mars sering disebut sebagai Planet …",["Biru","Merah","Hijau","Ungu"],1,"Betul! Mars tampak kemerahan."],
+  ["Mars berada di urutan ke … dari Matahari.",["Dua","Tiga","Empat","Enam"],2,"Tepat! Mars adalah planet keempat."],
+  ["Apakah Mars memiliki dua satelit alami?",["Ya","Tidak","Lima","Tidak diketahui"],0,"Benar! Namanya Phobos dan Deimos."],
+  ["Wahana tanpa awak yang menjelajahi Mars disebut …",["Kapal layar","Rover","Kereta","Kapal selam"],1,"Hebat! Rover adalah kendaraan penjelajah."],
+  ["Mars lebih kecil daripada …",["Merkurius","Bumi","Bulan","Phobos"],1,"Betul! Ukuran Mars lebih kecil dari Bumi."]
+ ]},
+ {name:"Jupiter",emoji:"🟠",desc:"Raksasa gas",color:"#ffc46c",questions:[
+  ["Jupiter adalah planet terbesar di …",["Tata Surya","Bumi","Galaksi","Indonesia"],0,"Benar! Jupiter adalah planet terbesar di Tata Surya."],
+  ["Jupiter termasuk planet …",["Batuan","Kerdil","Gas raksasa","Es kecil"],2,"Tepat! Jupiter merupakan raksasa gas."],
+  ["Bintik Merah Besar di Jupiter adalah …",["Gunung","Badai raksasa","Danau","Kawah"],1,"Hebat! Itu adalah badai besar."],
+  ["Jupiter memiliki cincin yang …",["Sangat terang","Tidak ada","Tipis dan redup","Berwarna pelangi"],2,"Benar! Cincin Jupiter tipis dan redup."],
+  ["Jupiter berada setelah planet …",["Mars","Bumi","Venus","Merkurius"],0,"Tepat! Jupiter berada setelah Mars."]
+ ]},
+ {name:"Saturnus",emoji:"🪐",desc:"Planet bercincin indah",color:"#e8ce85",questions:[
+  ["Ciri Saturnus yang paling terkenal adalah …",["Lautan","Cincin","Gunung api","Hutan"],1,"Benar! Saturnus terkenal dengan cincinnya."],
+  ["Cincin Saturnus tersusun terutama dari …",["Daun","Pasir pantai","Es dan batuan","Awan kapas"],2,"Tepat! Cincinnya terdiri dari partikel es dan batuan."],
+  ["Saturnus adalah planet ke … dari Matahari.",["Empat","Lima","Enam","Delapan"],2,"Hebat! Saturnus adalah planet keenam."],
+  ["Saturnus termasuk kelompok planet …",["Gas raksasa","Batuan kecil","Kerdil","Laut"],0,"Betul! Saturnus termasuk raksasa gas."],
+  ["Apakah Saturnus memiliki banyak satelit alami?",["Ya","Tidak","Hanya satu","Tidak pernah"],0,"Benar! Saturnus memiliki banyak satelit alami."]
+ ]}
+];
+let score=0,stars=0,unlocked=0,current=0,qIndex=0,answered=false,soundOn=true,audioCtx=null;
+const $=id=>document.getElementById(id);
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$(id).classList.add("active")}
+function updateHud(){$("score").textContent=score;$("stars").textContent=stars;$("planetHud").textContent=current>=0&&current<missions.length?missions[current].name:"Selesai"}
+function beep(freq=550,duration=.12){if(!soundOn)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.connect(g);g.connect(audioCtx.destination);o.frequency.value=freq;g.gain.setValueAtTime(.08,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.start();o.stop(audioCtx.currentTime+duration)}catch(e){}}
+function renderMap(){let grid=$("planetGrid");grid.innerHTML="";missions.forEach((m,i)=>{let b=document.createElement("button");b.className="planet"+(i>unlocked?" locked":"");b.innerHTML=`<div class="emoji">${m.emoji}</div><h3>${m.name}${i>unlocked?" 🔒":""}</h3><p>${m.desc}</p><p style="margin-top:8px;color:#ffe18a">${i<unlocked?"✓ Selesai":i===unlocked?"▶ Siap dijelajahi":"Terkunci"}</p>`;b.disabled=i>unlocked;b.onclick=()=>startMission(i);grid.appendChild(b)})}
+function startMission(i){current=i;qIndex=0;show("game");loadQuestion()}
+function loadQuestion(){answered=false;let m=missions[current],q=m.questions[qIndex];$("qPlanet").textContent=m.emoji+" MISI "+m.name.toUpperCase();$("question").textContent=q[0];$("qCount").textContent=(qIndex+1)+" / "+m.questions.length;$("progressBar").style.width=(qIndex/m.questions.length*100)+"%";$("feedback").textContent="";$("feedback").className="feedback";$("nextBtn").disabled=true;$("nextBtn").textContent=qIndex===m.questions.length-1?"LIHAT HASIL 🏆":"LANJUTKAN →";let box=$("answers");box.innerHTML="";q[1].forEach((a,i)=>{let b=document.createElement("button");b.className="answer";b.textContent=String.fromCharCode(65+i)+". "+a;b.onclick=()=>choose(i,b);box.appendChild(b)})}
+function choose(i,button){if(answered)return;answered=true;let q=missions[current].questions[qIndex],all=[...$("answers").children];all.forEach((b,n)=>{b.disabled=true;if(n===q[2])b.classList.add("correct")});if(i===q[2]){score+=10;stars++;$("feedback").textContent="⭐ "+q[3];$("feedback").classList.add("good");beep(760)}else{button.classList.add("wrong");$("feedback").textContent="💡 Belum tepat. "+q[3];$("feedback").classList.add("bad");beep(220)}updateHud();$("nextBtn").disabled=false}
+function finishMission(){let count=missions[current].questions.length,earned=stars;unlocked=Math.max(unlocked,Math.min(current+1,missions.length-1));$("progressBar").style.width="100%";$("finalScore").textContent=score+" POIN";$("earnedStars").textContent="⭐".repeat(Math.min(5,Math.round(earned/5)))||"☆";$("resultTitle").textContent=current===missions.length-1?"SELURUH MISI SELESAI!":"MISI "+missions[current].name.toUpperCase()+" BERHASIL!";$("resultText").textContent="Kamu telah menyelesaikan tantangan di "+missions[current].name+". Terus belajar dan kumpulkan lebih banyak bintang!";$("continueBtn").textContent=current===missions.length-1?"ULANGI PETUALANGAN ↻":"KE PLANET BERIKUTNYA 🚀";show("result");beep(900,.25)}
+$("startBtn").onclick=()=>{renderMap();show("map");beep()};$("homeBtn").onclick=()=>show("home");$("mapBtn").onclick=()=>{renderMap();show("map")};$("nextBtn").onclick=()=>{if(!answered)return;if(qIndex<missions[current].questions.length-1){qIndex++;loadQuestion()}else finishMission()};$("continueBtn").onclick=()=>{if(current<missions.length-1){current++;renderMap();show("map")}else{score=0;stars=0;unlocked=0;current=0;updateHud();renderMap();show("map")}};$("soundBtn").onclick=()=>{soundOn=!soundOn;$("soundBtn").textContent=soundOn?"🔊 Suara: ON":"🔇 Suara: OFF";if(soundOn)beep()};
+updateHud();
+</script>
+</body>
+</html>
